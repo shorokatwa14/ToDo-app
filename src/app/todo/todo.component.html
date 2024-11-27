@@ -1,68 +1,67 @@
 <div class="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
-    <!-- App Header -->
-    <div class="text-center text-3xl font-bold text-gray-700 mb-6">
-      Todo App
-      <button class="ml-3" (click)="addTask()">
-        <mat-icon class="text-green-500" style="font-size: 36px;">playlist_add</mat-icon>
-      </button>
-    </div>
-  
-    <!-- Add New Task Section -->
-    <div class="flex items-center mb-6">
-      <input
-        [(ngModel)]="newTaskTitle"
-        placeholder="New Task"
-        class="flex-grow border border-gray-300 rounded-l-lg px-4 py-3 focus:outline-none focus:ring focus:ring-green-200"
-      />
-      <button (click)="addTask()" class="bg-green-500 text-white px-5 py-3 rounded-r-lg">
-        <mat-icon class="text-white" style="font-size: 24px;">add</mat-icon>
-      </button>
-    </div>
-  
-    <!-- Tasks List -->
-    <ul>
-      <li
-        *ngFor="let task of tasks"
-        class="flex items-center justify-between bg-gray-100 rounded-lg p-4 mb-4"
-      >
-        <!-- Task Title and Checkbox -->
-        <div class=" overflow-hidden flex items-center">
-          <input
-            type="checkbox"
-            class="mr-3 w-5 h-5"
-            [checked]="task.completed"
-            (change)="toggleCompletion(task)"
-          />
-          <span
-            [class.line-through]="task.completed"
-            class="text-gray-700"
-            *ngIf="editingTaskId !== task.id"
-          >
-            {{ task.title }}
-          </span>
-          <input
-            *ngIf="editingTaskId === task.id"
-            [(ngModel)]="editingTitle"
-            class="w-full p-3 text-lg border border-gray-300 rounded-md"
-          />
-        </div>
-  
-        <!-- Action Buttons -->
-        <div class="flex items-center space-x-3">
-          <button (click)="startEditing(task)" *ngIf="editingTaskId !== task.id">
-            <mat-icon class="text-yellow-500" style="font-size: 24px;">edit</mat-icon>
-          </button>
-          <button (click)="saveTask(task)" *ngIf="editingTaskId === task.id">
-            <mat-icon class="text-green-500" style="font-size: 24px;">save</mat-icon>
-          </button>
-          <button (click)="cancelEditing()" *ngIf="editingTaskId === task.id">
-            <mat-icon class="text-red-500" style="font-size: 24px;">cancel</mat-icon>
-          </button>
-          <button (click)="deleteTask(task.id)">
-            <mat-icon class="text-red-500" style="font-size: 24px;">delete</mat-icon>
-          </button>
-        </div>
-      </li>
-    </ul>
+  <!-- App Header -->
+  <div class="text-center text-3xl font-bold text-gray-700 mb-6">
+    Todo App
+    <button class="ml-3" (click)="addTask()">
+      <mat-icon class="text-green-500" style="font-size: 36px;">playlist_add</mat-icon>
+    </button>
   </div>
-  
+
+  <!-- Add New Task Section -->
+  <div class="flex items-center mb-6">
+    <input
+      [(ngModel)]="newTaskTitle"
+      placeholder="New Task"
+      class="flex-grow border border-gray-300 rounded-l-lg px-4 py-3 focus:outline-none focus:ring focus:ring-green-200"
+    />
+    <button (click)="addTask()" class="bg-green-500 text-white px-5 py-3 rounded-r-lg">
+      <mat-icon class="text-white" style="font-size: 24px;">add</mat-icon>
+    </button>
+  </div>
+
+  <!-- Tasks List -->
+  <ul>
+    <li
+      *ngFor="let task of tasks"
+      class="flex items-center justify-between bg-gray-100 rounded-lg p-4 mb-4"
+    >
+      <!-- Task Title and Checkbox -->
+      <div class="flex items-center">
+        <input
+          type="checkbox"
+          class="mr-3 w-5 h-5"
+          [checked]="task.completed"
+          (change)="toggleCompletion(task)"
+        />
+        <span
+          [class.line-through]="task.completed"
+          class="text-gray-700"
+          *ngIf="editingTaskId !== task.id"
+        >
+          {{ task.title }}
+        </span>
+        <input
+          *ngIf="editingTaskId === task.id"
+          [(ngModel)]="editingTitle"
+          class="border border-gray-300 px-2 py-1 rounded"
+        />
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center space-x-3">
+        <button (click)="startEditing(task)" *ngIf="editingTaskId !== task.id">
+          <mat-icon class="text-yellow-500" style="font-size: 24px;">edit</mat-icon>
+        </button>
+        <button (click)="saveTask(task)" *ngIf="editingTaskId === task.id">
+          <mat-icon class="text-green-500" style="font-size: 24px;">save</mat-icon>
+        </button>
+        <button (click)="cancelEditing()" *ngIf="editingTaskId === task.id">
+          <mat-icon class="text-red-500" style="font-size: 24px;">cancel</mat-icon>
+        </button>
+        <button (click)="deleteTask(task.id)">
+          <mat-icon class="text-red-500" style="font-size: 24px;">delete</mat-icon>
+        </button>
+      </div>
+    </li>
+  </ul>
+</div>
