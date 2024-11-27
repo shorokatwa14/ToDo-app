@@ -9,7 +9,7 @@ interface Task {
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.component.html',
-  styleUrls: ['./todo.component.scss'],
+  styleUrls: ['./todo.component.css'],
 })
 export class TodoComponent {
   tasks: Task[] = [
