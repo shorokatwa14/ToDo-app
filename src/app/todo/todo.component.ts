@@ -1,48 +1,78 @@
-import { Component } from '@angular/core';
-
-interface Task {
-  id: number;
-  title: string;
-  completed: boolean;
-}
+import { Component, OnInit } from '@angular/core';
+import { Todo, TodoService } from '../services/todo.service';
 
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.component.html',
-  styleUrls: ['./todo.component.css'],
+  styleUrls: ['./todo.component.scss']
 })
-export class TodoComponent {
-  tasks: Task[] = [
-    { id: 1, title: 'Buy Ticket', completed: false },
-    { id: 2, title: 'Read a Book', completed: false },
-    { id: 3, title: 'Clean Desk', completed: true },
-  ];
-
+export class TodoComponent implements OnInit {
+  tasks: Todo[] = [];
   newTaskTitle: string = '';
-  editingTaskId: number | null = null;
+  editingTaskId: string | null = null;
   editingTitle: string = '';
 
-  addTask(): void {
-    if (this.newTaskTitle.trim()) {
-      this.tasks.push({
-        id: Date.now(),
-        title: this.newTaskTitle.trim(),
-        completed: false,
-      });
-      this.newTaskTitle = '';
-    }
+  constructor(private todoService: TodoService) {}
+
+  ngOnInit(): void {
+    this.todoService.getTodos().subscribe({
+      next: (todos) => {
+        this.tasks = todos;
+      },
+      error: (error) => {
+        console.error('Error fetching todos:', error);
+      }
+    });
   }
 
-  startEditing(task: Task): void {
-    this.editingTaskId = task.id;
+  addTask(): void {
+    // Prevent adding empty tasks
+    if (!this.newTaskTitle.trim()) return;
+
+    const newTask: Todo = {
+      title: this.newTaskTitle.trim(),
+      completed: false
+    };
+
+    this.todoService.addTodo(newTask)
+      .then(() => {
+        this.newTaskTitle = ''; // Clear input after successful add
+      })
+      .catch((error) => {
+        console.error('Error adding task:', error);
+      });
+  }
+
+  toggleCompletion(task: Todo): void {
+    if (!task.id) return;
+
+    const updatedTask = { ...task, completed: !task.completed };
+    this.todoService.updateTodo(updatedTask)
+      .catch((error) => {
+        console.error('Error updating task:', error);
+      });
+  }
+
+  startEditing(task: Todo): void {
+    this.editingTaskId = task.id || null;
     this.editingTitle = task.title;
   }
 
-  saveTask(task: Task): void {
-    if (this.editingTaskId === task.id && this.editingTitle.trim()) {
-      task.title = this.editingTitle.trim();
-      this.cancelEditing();
-    }
+  saveTask(task: Todo): void {
+    if (!this.editingTitle.trim() || !task.id) return;
+
+    const updatedTask = { 
+      ...task, 
+      title: this.editingTitle.trim() 
+    };
+
+    this.todoService.updateTodo(updatedTask)
+      .then(() => {
+        this.cancelEditing();
+      })
+      .catch((error) => {
+        console.error('Error saving task:', error);
+      });
   }
 
   cancelEditing(): void {
@@ -50,11 +80,15 @@ export class TodoComponent {
     this.editingTitle = '';
   }
 
-  toggleCompletion(task: Task): void {
-    task.completed = !task.completed;
-  }
-
-  deleteTask(taskId: number): void {
-    this.tasks = this.tasks.filter((task) => task.id !== taskId);
+  deleteTask(taskId?: string): void {
+    if (!taskId) {
+      console.error('Cannot delete task: No ID provided');
+      return;
+    }
+  
+    this.todoService.deleteTodo(taskId)
+      .catch((error) => {
+        console.error('Error deleting task:', error);
+      });
   }
 }
