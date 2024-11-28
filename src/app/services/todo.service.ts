@@ -25,8 +25,7 @@ export class TodoService {
     return addDoc(this.todoCollection, todo);
   }
   
-  async updateTodo(todo: Todo): Promise<void> {
-    if (!todo.id) return;
+   updateTodo(todo: Todo): Promise<void> {
     const todoDocRef = doc(this.firestore, `todos/${todo.id}`);
     return updateDoc(todoDocRef, {
       title: todo.title,
