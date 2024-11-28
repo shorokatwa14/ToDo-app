@@ -17,7 +17,7 @@ export class TodoService {
   constructor(private firestore: Firestore) {}
 
   getTodos(): Observable<Todo[]> {
-    const todoQuery = query(this.todoCollection, orderBy('completed', 'asc'));
+    const todoQuery = query(this.todoCollection, orderBy('title', 'asc'));
     return collectionData(todoQuery, { idField: 'id' }) as Observable<Todo[]>;
   }
 
