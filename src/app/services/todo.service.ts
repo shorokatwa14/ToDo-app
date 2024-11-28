@@ -21,7 +21,7 @@ export class TodoService {
     return collectionData(todoQuery, { idField: 'id' }) as Observable<Todo[]>;
   }
 
-  async addTodo(todo: Todo): Promise<any> {
+   addTodo(todo: Todo): Promise<any> {
     return addDoc(this.todoCollection, todo);
   }
   
@@ -34,7 +34,7 @@ export class TodoService {
     });
   }
 
-  async deleteTodo(id: string): Promise<void> {
+   deleteTodo(id: string): Promise<void> {
     const todoDocRef = doc(this.firestore, `todos/${id}`);
     return deleteDoc(todoDocRef);
   }
