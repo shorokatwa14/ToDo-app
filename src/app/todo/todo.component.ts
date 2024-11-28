@@ -85,7 +85,6 @@ export class TodoComponent implements OnInit {
       console.error('Cannot delete task: No ID provided');
       return;
     }
-  
     this.todoService.deleteTodo(taskId)
       .catch((error) => {
         console.error('Error deleting task:', error);
