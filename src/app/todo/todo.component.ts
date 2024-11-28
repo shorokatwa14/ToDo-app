@@ -59,7 +59,7 @@ export class TodoComponent implements OnInit {
   }
 
   saveTask(task: Todo): void {
-    if (!this.editingTitle.trim() || !task.id) return;
+    if (!this.editingTitle.trim()) return;
 
     const updatedTask = { 
       ...task, 
