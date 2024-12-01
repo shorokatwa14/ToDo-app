@@ -15,11 +15,10 @@ export class TodoComponent implements OnInit {
   editingTaskId: string | null = null;
   editingTitle: string = '';
   showDeleteAllModal: boolean = false; 
-  isFocused: boolean = false;
 
   constructor(private todoService: TodoService ,private fb: FormBuilder) {
   this.taskForm = this.fb.group({
-    newTaskTitle: ['', [Validators.required, Validators.minLength(3)]]
+    newTaskTitle: ['', []]
   });
 }
    ngOnInit(): void {
@@ -36,38 +35,28 @@ export class TodoComponent implements OnInit {
       }
     });
   }
-  onFocus(): void {
-    // Show validation errors only when input is focused
-    this.isFocused = true;
+ 
+addTask(): void {
+
+  if (this.taskForm.invalid) {
+    return;
   }
 
-  onBlur(): void {
-    // Hide validation errors when focus leaves the input
-    this.isFocused = false;
-  }
+  const newTask: Todo = {
+    title: this.taskForm.get('newTaskTitle')!.value.trim(),
+    completed: false
+  };
 
-  addTask(): void {
-      // Show validation error when trying to submit
-      this.isFocused = true;
+  this.todoService.addTodo(newTask)
+    .then(() => {
 
-      if (this.taskForm.invalid) {
-        return;
-      }
-    const newTask: Todo = {
-      title: this.taskForm.get('newTaskTitle')!.value.trim(),
-      completed: false
-    };
+    })
+    .catch((error) => {
+      console.error('Error adding task:', error);
+    });
 
-    this.todoService.addTodo(newTask)
-      .then(() => {
-        this.taskForm.reset();
-        this.isFocused = false;
-
-      })
-      .catch((error) => {
-        console.error('Error adding task:', error);
-      });
-  }
+    this.taskForm.reset();
+}
 
   toggleCompletion(task: Todo): void {
     if (!task.id) return;
@@ -104,7 +93,6 @@ export class TodoComponent implements OnInit {
       this.editingTaskId = null;
       this.editingTitle = '';
     } else {
-      // Start editing the new task
       this.editingTaskId = task.id || null;
       this.editingTitle = task.title;
     }
@@ -119,33 +107,29 @@ export class TodoComponent implements OnInit {
   clearAllTasks(): void {
     this.todoService.deleteAllTodos()
       .then(() => {
-        // Clear the local tasks array
         this.tasks = [];
       })
       .catch((error) => {
         console.error('Error clearing all tasks:', error);
       });
   }
-  // Modal Logic
-  openDeleteAllModal(): void {
-    this.showDeleteAllModal = true;
-  }
-
-  closeDeleteAllModal(): void {
-    this.showDeleteAllModal = false;
-  }
-
-  confirmDeleteAll(): void {
-    this.todoService.deleteAllTodos()
-      .then(() => {
-        this.tasks = [];
-        this.closeDeleteAllModal();
-      })
-      .catch((error) => {
-        console.error('Error clearing all tasks:', error);
-      });
-  }
-  get newTaskTitleControl() {
-    return this.taskForm.get('newTaskTitle');
-  }
+ openDeleteAllModal(): void {
+  this.showDeleteAllModal = true;  
 }
+
+closeDeleteAllModal(): void {
+  this.showDeleteAllModal = false;  
+}
+
+confirmDeleteAll(): void {
+  this.todoService.deleteAllTodos()
+    .then(() => {
+      this.tasks = [];  
+      this.closeDeleteAllModal();  
+    })
+    .catch((error) => {
+      console.error('Error clearing all tasks:', error);
+    });
+}
+}
+
