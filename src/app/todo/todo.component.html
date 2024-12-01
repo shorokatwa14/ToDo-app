@@ -12,8 +12,6 @@
     <input
       formControlName="newTaskTitle"
       placeholder="New Task"
-      (focus)="onFocus()"
-      (blur)="onBlur()"
       class="w-full sm:flex-grow border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring focus:ring-green-200"
     />
     <button
@@ -24,12 +22,7 @@
     </button>
   </div>
 
-  <!-- Validation Message -->
-  <div *ngIf="isFocused && taskForm.get('newTaskTitle')?.invalid" 
-       class="text-red-500 text-sm mt-2">
-    <span *ngIf="taskForm.get('newTaskTitle')?.errors?.['required']">Task title is required.</span>
-    <span *ngIf="taskForm.get('newTaskTitle')?.errors?.['minlength']">Task title must be at least 3 characters long.</span>
-  </div>
+
 </form>
   <!-- Tasks List -->
   <ul>
@@ -101,7 +94,8 @@
     </li>
   </ul>
 
-  <div class="flex justify-center mt-6">
+   <!-- Delete All Button (Centered at the Bottom) -->
+   <div class="flex justify-center mt-6">
     <button
       (click)="openDeleteAllModal()"
       class="bg-red-500 text-white px-6 py-3 rounded-lg shadow hover:bg-red-600 flex items-center"
@@ -109,27 +103,23 @@
       <mat-icon class="text-white mr-2" style="font-size: 20px;">delete_sweep</mat-icon>
       Delete All
     </button>
-  </div>
-
-  <!-- Modal for Confirming Delete All -->
-  <div *ngIf="showDeleteAllModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white p-8 rounded-lg max-w-sm w-full text-center">
-      <h3 class="text-xl font-bold mb-4">Are you sure you want to delete all tasks?</h3>
-      <div class="flex justify-center space-x-4">
-        <button 
-          (click)="confirmDeleteAll()"
-          class="bg-red-500 text-white px-4 py-2 rounded-lg"
-        >
-          Yes, Delete
-        </button>
-        <button 
-          (click)="closeDeleteAllModal()"
-          class="bg-gray-500 text-white px-4 py-2 rounded-lg"
-        >
-          Cancel
-        </button>
-      </div>
-    </div>
+    <!-- Modal for Confirming Delete All -->
+<div *ngIf="showDeleteAllModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-8 rounded-lg max-w-sm w-full text-center">
+    <h3 class="text-xl font-bold mb-4">Are you sure you want to delete all tasks?</h3>
+    <div class="flex justify-center space-x-4">
+      <button 
+        (click)="confirmDeleteAll()"
+        class="bg-red-500 text-white px-4 py-2 rounded-lg"
+      >
+        Yes, Delete
+      </button>
+      <button 
+        (click)="closeDeleteAllModal()"
+        class="bg-gray-500 text-white px-4 py-2 rounded-lg"
+      >
+        Cancel
+      </button>
   </div>
 </div>
 </div>
