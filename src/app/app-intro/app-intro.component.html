@@ -1,33 +1,35 @@
- <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-green-100 p-4">
-      <div class="max-w-md w-full bg-white shadow-2xl rounded-xl overflow-hidden">
-        <div class="p-8 text-center">
-          <h1 class="text-4xl font-extrabold text-green-500 mb-4">
-            Todo App
-          </h1>
-          <p class="text-gray-600 mb-8 leading-relaxed">
-            Organize your day, boost your productivity, and stay on top of your tasks with our intuitive todo list app.
-          </p>
-          
-          <button 
-            (click)="navigateToTodoList()"
-            class="w-full py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors duration-300 flex items-center justify-center space-x-2 font-semibold"
-          >
-            <span>Start Managing Tasks</span>
-            <mat-icon class="ml-2">chevron_right</mat-icon>
-          </button>
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-green-100 p-10">
+  <div class="max-w-4xl w-full bg-white shadow-4xl rounded-3xl overflow-hidden">
+    <div class="p-20 text-center">
+      <h1 class="text-7xl font-extrabold text-green-500 mb-10">
+        Todo App
+      </h1>
+      <p class="text-gray-600 mb-14 leading-relaxed text-2xl">
+        Organize your day, boost your productivity, and stay on top of your tasks with our intuitive todo list app. Streamline your workflow, maximize efficiency, and transform how you manage your daily responsibilities.
+      </p>
+      
+      <div class="flex justify-center">
+        <button
+          (click)="navigateToTodoList()"
+          class="w-auto px-6 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors duration-300 flex items-center justify-center space-x-1 font-semibold text-base"
+        >
+          <span>Start Managing Tasks</span>
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+    </div>
+    
+    <div class="bg-green-50 p-10 text-center">
+      <div class="flex justify-center space-x-10">
+        <div class="flex items-center space-x-3 text-green-700">
+          <mat-icon class="text-1xl">check_circle</mat-icon>
+          <span class="text-base">Easy to Use</span>
         </div>
-        
-        <div class="bg-blue-50 p-4 text-center">
-          <div class="flex justify-center space-x-4">
-            <div class="flex items-center space-x-2 text-green-700">
-              <mat-icon>check_circle</mat-icon>
-              <span class="text-sm">Easy to Use</span>
-            </div>
-            <div class="flex items-center space-x-2 text-green-700">
-              <mat-icon>speed</mat-icon>
-              <span class="text-sm">Efficient</span>
-            </div>
-          </div>
+        <div class="flex items-center space-x-3 text-green-700">
+          <mat-icon class="text-1xl">speed</mat-icon>
+          <span class="text-base">Efficient</span>
         </div>
       </div>
     </div>
+  </div>
+</div>
