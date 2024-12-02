@@ -1,125 +1,135 @@
 <div class="min-h-screen bg-gradient-to-br from-green-50 to-green-100 p-4"> 
-<div class="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg ">
-  <!-- App Header -->
-  <div class="text-center text-3xl font-bold text-gray-700 mb-6">
-    Todo App
+  <!-- Snackbar -->
+  <div *ngIf="showSnackbar" class="fixed bottom-0 left-0 right-0 flex justify-center mb-4 z-50">
+    <div class="bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg">
+      {{ snackbarMessage }}
+    </div>
+  </div>
+
+  <div class="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg ">
+    <!-- App Header -->
+    <div class="text-center text-3xl font-bold text-gray-700 mb-6">
+      Todo App
       <mat-icon class="text-green-500" style="font-size: 36px;">playlist_add</mat-icon>
-  </div>
+    </div>
 
- <!-- Add New Task Section -->
- <form [formGroup]="taskForm" (ngSubmit)="addTask()" class="mb-6">
-  <div class="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-3">
-    <input
-      formControlName="newTaskTitle"
-      placeholder="New Task"
-      class="w-full sm:flex-grow border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring focus:ring-green-200"
-    />
-    <button
-      type="submit"
-      class="w-full sm:w-auto bg-green-500 text-white px-5 py-2.5 rounded-lg sm:rounded-r-lg"
-    >
-      <mat-icon class="text-white" style="font-size: 24px;">add</mat-icon>
-    </button>
-  </div>
-
-
-</form>
-  <!-- Tasks List -->
-  <ul>
-    <li
-      *ngFor="let task of tasks"
-      class="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-gray-100 rounded-lg p-4 mb-4"
-    >
-      <!-- Task Title and Checkbox -->
-      <div class="flex items-center mb-3 sm:mb-0">
+    <!-- Add New Task Section -->
+    <form [formGroup]="taskForm" (ngSubmit)="addTask()" class="mb-6">
+      <div class="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-3">
         <input
-          type="checkbox"
-          class="mr-3 w-5 h-5"
-          [checked]="task.completed"
-          (change)="toggleCompletion(task)"
+          formControlName="newTaskTitle"
+          placeholder="New Task"
+          class="w-full sm:flex-grow border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring focus:ring-green-200"
         />
-        <span
-          [class.line-through]="task.completed"
-          class="text-gray-700"
-          *ngIf="editingTaskId !== task.id"
+        <button
+          type="submit"
+          class="w-full sm:w-auto bg-green-500 text-white px-5 py-2.5 rounded-lg sm:rounded-r-lg"
         >
-          {{ task.title }}
-        </span>
-        <input
-          *ngIf="editingTaskId === task.id"
-          [(ngModel)]="editingTitle"
-          class="border border-gray-300 px-2 py-1 rounded"
-        />
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="flex space-x-2 justify-center sm:justify-end">
-        <!-- Conditional Edit/Save/Cancel Buttons -->
-        <ng-container *ngIf="editingTaskId !== task.id; else editingButtons">
-          <button 
-            type="button"
-            (click)="toggleEditing(task)"
-            class="hover:bg-yellow-100 rounded-full p-1"
-          >
-            <mat-icon class="text-yellow-500" style="font-size: 24px;">edit</mat-icon>
-          </button>
-        </ng-container>
-
-        <ng-template #editingButtons>
-          <button 
-            type="button"
-            (click)="saveTask(task)"
-            class="hover:bg-green-100 rounded-full p-1"
-          >
-            <mat-icon class="text-green-500" style="font-size: 24px;">save</mat-icon>
-          </button>
-          <button 
-            type="button"
-            (click)="toggleEditing(task)"
-            class="hover:bg-red-100 rounded-full p-1"
-          >
-            <mat-icon class="text-red-500" style="font-size: 24px;">cancel</mat-icon>
-          </button>
-        </ng-template>
-
-        <!-- Delete Button (Always Visible) -->
-        <button 
-          type="button"
-          (click)="deleteTask(task.id || '')"
-          class="hover:bg-red-100 rounded-full p-1"
-        >
-          <mat-icon class="text-red-500" style="font-size: 24px;">delete</mat-icon>
+          <mat-icon class="text-white" style="font-size: 24px;">add</mat-icon>
         </button>
       </div>
-    </li>
-  </ul>
+    </form>
 
-   <!-- Delete All Button (Centered at the Bottom) -->
-   <div class="flex justify-center mt-6">
-    <button
-      (click)="openDeleteAllModal()"
-      class="bg-red-500 text-white px-6 py-3 rounded-lg shadow hover:bg-red-600 flex items-center"
-    >
-      <mat-icon class="text-white mr-2" style="font-size: 20px;">delete_sweep</mat-icon>
-      Delete All
-    </button>
+    <!-- Tasks List -->
+    <ul>
+      <li
+        *ngFor="let task of tasks"
+        class="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-gray-100 rounded-lg p-4 mb-4"
+      >
+        <!-- Task Title and Checkbox -->
+        <div class="flex items-center mb-3 sm:mb-0">
+          <input
+            type="checkbox"
+            class="mr-3 w-5 h-5"
+            [checked]="task.completed"
+            (change)="toggleCompletion(task)"
+          />
+          <span
+            [class.line-through]="task.completed"
+            class="text-gray-700"
+            *ngIf="editingTaskId !== task.id"
+          >
+            {{ task.title }}
+          </span>
+          <input
+            *ngIf="editingTaskId === task.id"
+            [(ngModel)]="editingTitle"
+            class="border border-gray-300 px-2 py-1 rounded"
+          />
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex space-x-2 justify-center sm:justify-end">
+          <!-- Conditional Edit/Save/Cancel Buttons -->
+          <ng-container *ngIf="editingTaskId !== task.id; else editingButtons">
+            <button 
+              type="button"
+              (click)="toggleEditing(task)"
+              class="hover:bg-yellow-100 rounded-full p-1"
+            >
+              <mat-icon class="text-yellow-500" style="font-size: 24px;">edit</mat-icon>
+            </button>
+          </ng-container>
+
+          <ng-template #editingButtons>
+            <button 
+              type="button"
+              (click)="saveTask(task)"
+              class="hover:bg-green-100 rounded-full p-1"
+            >
+              <mat-icon class="text-green-500" style="font-size: 24px;">save</mat-icon>
+            </button>
+            <button 
+              type="button"
+              (click)="toggleEditing(task)"
+              class="hover:bg-red-100 rounded-full p-1"
+            >
+              <mat-icon class="text-red-500" style="font-size: 24px;">cancel</mat-icon>
+            </button>
+          </ng-template>
+
+          <!-- Delete Button (Always Visible) -->
+          <button 
+            type="button"
+            (click)="deleteTask(task.id || '')"
+            class="hover:bg-red-100 rounded-full p-1"
+          >
+            <mat-icon class="text-red-500" style="font-size: 24px;">delete</mat-icon>
+          </button>
+        </div>
+      </li>
+    </ul>
+
+    <!-- Delete All Button (Centered at the Bottom) -->
+    <div class="flex justify-center mt-6">
+      <button
+        (click)="openDeleteAllModal()"
+        class="bg-red-500 text-white px-6 py-3 rounded-lg shadow hover:bg-red-600 flex items-center"
+      >
+        <mat-icon class="text-white mr-2" style="font-size: 20px;">delete_sweep</mat-icon>
+        Delete All
+      </button>
+    </div>
+
     <!-- Modal for Confirming Delete All -->
-<div *ngIf="showDeleteAllModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-  <div class="bg-white p-8 rounded-lg max-w-sm w-full text-center">
-    <h3 class="text-xl font-bold mb-4">Are you sure you want to delete all tasks?</h3>
-    <div class="flex justify-center space-x-4">
-      <button 
-        (click)="confirmDeleteAll()"
-        class="bg-red-500 text-white px-4 py-2 rounded-lg"
-      >
-        Yes, Delete
-      </button>
-      <button 
-        (click)="closeDeleteAllModal()"
-        class="bg-gray-500 text-white px-4 py-2 rounded-lg"
-      >
-        Cancel
-      </button>
+    <div *ngIf="showDeleteAllModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white p-8 rounded-lg max-w-sm w-full text-center">
+        <h3 class="text-xl font-bold mb-4">Are you sure you want to delete all tasks?</h3>
+        <div class="flex justify-center space-x-4">
+          <button 
+            (click)="confirmDeleteAll()"
+            class="bg-red-500 text-white px-4 py-2 rounded-lg"
+          >
+            Yes, Delete
+          </button>
+          <button 
+            (click)="closeDeleteAllModal()"
+            class="bg-gray-500 text-white px-4 py-2 rounded-lg"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
 </div>
